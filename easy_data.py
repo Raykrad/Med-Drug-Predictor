@@ -7,16 +7,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay
 
 data = pd.read_csv("drug200.csv")
-
 categorical_cols = ['Sex', 'BP', 'Cholesterol']
 data_encoded = data.copy()
 le = LabelEncoder()
 for col in categorical_cols:
     data_encoded[col] = le.fit_transform(data_encoded[col])
-
 X = data_encoded.drop('Drug', axis=1)
 y = data_encoded['Drug']
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 param_grid_tree = {
@@ -39,14 +36,12 @@ y_pred_lr = grid_lr.predict(X_test)
 
 print("Средняя точность дерева решений:", accuracy_score(y_test, y_pred_tree))
 print("Отчёт классификации для дерева решений:\n", classification_report(y_test, y_pred_tree))
-
 print("Средняя точность логистической регрессии:", accuracy_score(y_test, y_pred_lr))
 print("Отчёт классификации для логистической регрессии:\n", classification_report(y_test, y_pred_lr))
 
 ConfusionMatrixDisplay.from_estimator(grid_tree, X_test, y_test)
 plt.title("Матрица ошибок – дерево решений")
 plt.show()
-
 ConfusionMatrixDisplay.from_estimator(grid_lr, X_test, y_test)
 plt.title("Матрица ошибок – логистическая регрессия")
 plt.show()
